@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="test1"></div>
+    <div id="test2"></div>
+    <div id="test3"></div>
+
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react dom 支持react操作dom -->
+    <script
+      type="text/javascript"
+      src="../js/react-dom.development.js"
+    ></script>
+    <!-- 引入babel 用于将jsx转为js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <!-- prop-types  用于限制 -->
+    <script src="../js/prop-types.js"></script>
+    <script type="text/babel">
+      // 创建组件
+      class Person extends React.Component {
+        // Person实例上加规则  propTypes  isRequired表示必填
+        static propTypes = {
+          name: PropTypes.string.isRequired,
+          sex: PropTypes.string,
+          age: PropTypes.number,
+          speak: PropTypes.func,
+        };
+        // 指定默认值
+        static defaultProps = {
+          sex: "男",
+          age: 30,
+        };
+
+        render() {
+          return (
+            <ul>
+              <li>姓名:{this.props.name}</li>
+              <li>性别:{this.props.sex}</li>
+              <li>年龄:{this.props.age + 1}</li>
+            </ul>
+          );
+        }
+      }
+
+      ReactDOM.render(
+        <Person name="tom" age={18} sex="女" speak={speak} />,
+        document.getElementById("test1")
+      );
+      ReactDOM.render(
+        <Person name="jerry" age={18} sex="男" />,
+        document.getElementById("test2")
+      );
+      // {...p} 拓展运算符拆分对象的写法  仅在标签中适用
+      const p = { name: "11", age: 22, sex: "33" };
+      // console.log({ ...p });
+      ReactDOM.render(<Person {...p} />, document.getElementById("test3"));
+
+      function speak() {
+        console.log("我说话了");
+      }
+    </script>
+  </body>
+</html>

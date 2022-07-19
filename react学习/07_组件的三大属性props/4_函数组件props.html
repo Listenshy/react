@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="test1"></div>
+
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react dom 支持react操作dom -->
+    <script
+      type="text/javascript"
+      src="../js/react-dom.development.js"
+    ></script>
+    <!-- 引入babel 用于将jsx转为js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <!-- prop-types  用于限制 -->
+    <script src="../js/prop-types.js"></script>
+    <script type="text/babel">
+      // 函数组件只能用props
+      function Person(props) {
+        console.log(props);
+        const { name, age, sex } = props;
+        return (
+          <ul>
+            <li>姓名:{name}</li>
+            <li>性别:{sex}</li>
+            <li>年龄:{age + 1}</li>
+          </ul>
+        );
+      }
+
+      // Person实例上加规则  propTypes  isRequired表示必填
+      Person.propTypes = {
+        name: PropTypes.string.isRequired,
+        sex: PropTypes.string,
+        age: PropTypes.number,
+        speak: PropTypes.func,
+      };
+      // 指定默认值
+      Person.defaultProps = {
+        sex: "男",
+        age: 30,
+      };
+
+      ReactDOM.render(
+        <Person name="tom" age={18} sex="女" />,
+        document.getElementById("test1")
+      );
+    </script>
+  </body>
+</html>

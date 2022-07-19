@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="test"></div>
+
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react dom 支持react操作dom -->
+    <script
+      type="text/javascript"
+      src="../js/react-dom.development.js"
+    ></script>
+    <!-- 引入babel 用于将jsx转为js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+      // 创建组件   继承与React.Component
+      class Weather extends React.Component {
+        // 构造器 只调用一次
+        constructor(props) {
+          super(props);
+          this.state = {
+            isHot: true,
+            wind: "微风",
+          };
+          // 理论上  nice demo用一个词就行
+          this.nice = this.demo.bind(this);
+        }
+        // 调用1+n次  1是初始化的那次  n是状态更新的次数
+        render() {
+          const { isHot, wind } = this.state;
+          //   要注意大小写  不要加括号  否则会立即执行
+          return (
+            <h1 onClick={this.nice}>
+              今天天气很{isHot ? "炎热" : "凉爽"},{wind}
+            </h1>
+          );
+        }
+        demo() {
+          // console.log(this);
+          // 状态state不可直接更改  要借助setState
+          const isHot = this.state.isHot;
+          this.setState({ isHot: !isHot });
+        }
+      }
+      //   渲染
+      ReactDOM.render(<Weather />, document.getElementById("test"));
+    </script>
+  </body>
+</html>

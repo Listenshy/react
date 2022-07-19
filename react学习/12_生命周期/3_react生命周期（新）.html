@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <!-- 准备好容器 -->
+    <div id="test"></div>
+
+    <!-- 引入react核心库 -->
+    <script
+      type="text/javascript"
+      src="../js新版本/react.development.js"
+    ></script>
+    <!-- 引入react dom 支持react操作dom -->
+    <script
+      type="text/javascript"
+      src="../js新版本/react-dom.development.js"
+    ></script>
+    <!-- 引入babel 用于将jsx转为js -->
+    <script type="text/javascript" src="../js新版本/babel.min.js"></script>
+    <!-- 一定要写bable -->
+    <script type="text/babel">
+      // 新版本中所有带Will的生命周期都要加前缀UNSAFE_  除了最后一个
+      // 1.创建虚拟dom
+      class Count extends React.Component {
+        /* 
+				1. 初始化阶段: 由ReactDOM.render()触发---初次渲染
+								1.	constructor()
+								2.	getDerivedStateFromProps 
+								3.	render()
+								4.	componentDidMount() =====> 常用
+											一般在这个钩子中做一些初始化的事，例如：开启定时器、发送网络请求、订阅消息
+				2. 更新阶段: 由组件内部this.setSate()或父组件重新render触发
+								1.	getDerivedStateFromProps
+								2.	shouldComponentUpdate()
+								3.	render()
+								4.	getSnapshotBeforeUpdate
+								5.	componentDidUpdate()
+				3. 卸载组件: 由ReactDOM.unmountComponentAtNode()触发
+								1.	componentWillUnmount()  =====> 常用
+											一般在这个钩子中做一些收尾的事，例如：关闭定时器、取消订阅消息
+			*/
+
+        // 构造器
+        constructor(props) {
+          super(props);
+          console.log("constructor");
+        }
+        // 若state的值任何时候都取决于props 那么可以使用getDerivedStateFromProps
+        static getDerivedStateFromProps(props, state) {
+          console.log("getDerivedStateFromProps", props, state);
+          return null;
+        }
+        // 数据更新之前
+        getSnapshotBeforeUpdate() {
+          console.log("getSnapshotBeforeUpdate");
+          return null;
+        }
+        // 组件挂载完的钩子
+        componentDidMount() {
+          console.log("组件挂载完的钩子--componentDidMount");
+        }
+        // 组件将要卸载的钩子
+        componentWillUnmount() {
+          console.log("组件将要卸载的钩子--componentWillUnmount");
+        }
+        //控制组件更新的"阀门"
+        shouldComponentUpdate() {
+          console.log("控制组件更新的--shouldComponentUpdate");
+          return false;
+        }
+
+        // 组件更新完毕
+        componentDidUpdate() {
+          console.log("组件更新完毕--componentDidUpdate");
+        }
+        // 初始化状态
+        state = {
+          count: 0,
+        };
+
+        add = () => {
+          const { count } = this.state;
+          this.setState({ count: count + 1 });
+        };
+        // 卸载组件按钮
+        death = () => {
+          ReactDOM.unmountComponentAtNode(document.getElementById("test"));
+        };
+        // 强制更新
+        force = () => {
+          //   const { count } = this.state;
+          //   this.forceUpdate({ count: count + 1 });
+          this.forceUpdate();
+        };
+
+        render() {
+          console.log("render");
+          const { count } = this.state;
+          return (
+            <div>
+              <h2>当前求和:{count}</h2>
+              <button onClick={this.add}>点我加一</button>
+              <button onClick={this.death}>卸载组件</button>
+              <button onClick={this.force}>
+                不更改任何状态中的数据，强制更新
+              </button>
+            </div>
+          );
+        }
+      }
+
+      class A extends React.Component {
+        // 初始化
+        state = {
+          carName: "奔驰",
+        };
+
+        changeCar = () => {
+          this.setState({ carName: "奥拓" });
+        };
+
+        render() {
+          return (
+            <div>
+              <div>A</div>
+              <button onClick={this.changeCar}>换车</button>
+              <B carName={this.state.carName} />
+            </div>
+          );
+        }
+      }
+
+      class B extends React.Component {
+        componentDidMount() {
+          console.log("B--componentDidMount");
+        }
+        render() {
+          return <div>B接受到的车是:{this.props.carName}</div>;
+        }
+      }
+
+      // 2.渲染虚拟dom到页面
+      ReactDOM.render(<Count count={199} />, document.getElementById("test"));
+    </script>
+  </body>
+</html>
