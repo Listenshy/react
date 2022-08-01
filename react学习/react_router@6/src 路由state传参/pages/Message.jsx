@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 export default function Message() {
   const [massages] = useState([
@@ -7,18 +7,6 @@ export default function Message() {
     { id: "2", title: "消息2", content: "222222222" },
     { id: "3", title: "消息3", content: "333333333" },
   ]);
-  const navigate = useNavigate();
-  function showDetail(massages) {
-    navigate("detail", {
-      replace: false,
-      state: {
-        id: massages.id,
-        title: massages.title,
-        content: massages.content,
-      },
-    });
-  }
-
   return (
     <div>
       <ul>
@@ -35,7 +23,6 @@ export default function Message() {
               >
                 {item.title}
               </Link>
-              <button onClick={() => showDetail(item)}>点我查看</button>
             </li>
           );
         })}
